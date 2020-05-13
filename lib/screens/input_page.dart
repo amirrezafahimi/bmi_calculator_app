@@ -1,10 +1,15 @@
+import 'file:///C:/Users/amir/AndroidStudioProjects/bmi_calculator_app/lib/screens/results_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../components/bottom_button.dart';
+import '../components/round_Icon_button.dart';
 
-import 'constants.dart';
-import 'icon_content.dart';
-import 'resuable_card.dart';
+import 'package:bmicalculatorapp/calculator_brain.dart';
+
+import '../constants.dart';
+import '../components/icon_content.dart';
+import '../components/resuable_card.dart';
 
 enum GenderOptions { Male, Female }
 
@@ -15,7 +20,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   GenderOptions selectedGender;
-  int heightSliderNumber = 180;
+  int height = 180;
   int weight = 60;
   int age = 20;
 
@@ -82,7 +87,7 @@ class _InputPageState extends State<InputPage> {
                     textBaseline: TextBaseline.alphabetic,
                     children: <Widget>[
                       Text(
-                        '$heightSliderNumber',
+                        '$height',
                         style: kTextStyle,
                       ),
                       Text(
@@ -103,12 +108,12 @@ class _InputPageState extends State<InputPage> {
                           RoundSliderOverlayShape(overlayRadius: 30.0),
                     ),
                     child: Slider(
-                      value: heightSliderNumber.toDouble(),
+                      value: height.toDouble(),
                       min: 120,
                       max: 220,
                       onChanged: (double newValue) {
                         setState(() {
-                          heightSliderNumber = newValue.round();
+                          height = newValue.round();
                         });
                       },
                     ),
@@ -207,40 +212,26 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: kBottomContainerColor,
-            margin: EdgeInsets.only(
-              top: 10.0,
-            ),
-            width: double.infinity,
-            height: kBottomContainerHeight,
+          BottomButton(
+            buttonTitle: 'CALCULATE',
+            onTap: () {
+              CalculatorBrain calc =
+                  CalculatorBrain(height: height, weight: weight);
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ResultPage(
+                    bmiResult: calc.calculateBMI(),
+                    resultText: calc.getResult(),
+                    interpretation: calc.getInterpretation(),
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
-    );
-  }
-}
-
-class RoundIconButton extends StatelessWidget {
-  RoundIconButton({@required this.iconData, @required this.onPressed});
-
-  final IconData iconData;
-  final Function onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      child: Icon(iconData),
-      onPressed: () {
-        onPressed();
-      },
-      elevation: 6.0,
-      constraints: BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
-      shape: CircleBorder(),
-      fillColor: kButtonColor,
     );
   }
 }
