@@ -6,6 +6,7 @@ const kInactiveCardColor = Color(0xFF111328);
 const kBottomContainerColor = Color(0xFFEB1555);
 const kBottomContainerColorTransparent = Color(0x29EB1555);
 const kInactiveTrackColor = Color(0xFF8D8E98);
+const kButtonColor = Color(0xFF4C4F5E);
 
 const kTextColor = Color(0xFF8D8E98);
 
